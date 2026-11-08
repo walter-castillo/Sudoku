@@ -346,7 +346,7 @@ export default function App() {
   S?.v.forEach((v) => cnt[v]++);
 
   return (
-    <main className="sd">
+    <main className={"sd" + (tab === "play" ? " play" : "")}>
       <style>{CSS}</style>
       <header>
         <h1>Sudoku</h1>
@@ -381,41 +381,43 @@ export default function App() {
             <span>Errores: {S.err}</span>
             <span>Pistas: {S.hints}</span>
           </div>
-          <div
-            id="board"
-            role="grid"
-            aria-label="Tablero de sudoku"
-            aria-busy={busy}
-          >
-            {S.v.map((v, i) => {
-              const cls = [
-                "c",
-                S.giv[i] && "g",
-                i === sel ? "s" : pr.includes(i) ? "p" : "",
-                sv && v === sv && i !== sel ? "s2" : "",
-                v && v !== S.sol[i] ? "e" : "",
-              ];
-              return (
-                <div
-                  key={i}
-                  role="gridcell"
-                  className={cls.filter(Boolean).join(" ")}
-                  onClick={() => setSel(i)}
-                >
-                  {v ? (
-                    v
-                  ) : S.notes[i] ? (
-                    <div className="n">
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => (
-                        <span key={d}>{(S.notes[i] >> d) & 1 ? d : ""}</span>
-                      ))}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              );
-            })}
+          <div className="bw">
+            <div
+              id="board"
+              role="grid"
+              aria-label="Tablero de sudoku"
+              aria-busy={busy}
+            >
+              {S.v.map((v, i) => {
+                const cls = [
+                  "c",
+                  S.giv[i] && "g",
+                  i === sel ? "s" : pr.includes(i) ? "p" : "",
+                  sv && v === sv && i !== sel ? "s2" : "",
+                  v && v !== S.sol[i] ? "e" : "",
+                ];
+                return (
+                  <div
+                    key={i}
+                    role="gridcell"
+                    className={cls.filter(Boolean).join(" ")}
+                    onClick={() => setSel(i)}
+                  >
+                    {v ? (
+                      v
+                    ) : S.notes[i] ? (
+                      <div className="n">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => (
+                          <span key={d}>{(S.notes[i] >> d) & 1 ? d : ""}</span>
+                        ))}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
           <div className="pad">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => (
@@ -545,10 +547,13 @@ export default function App() {
 
 const CSS = `
 .sd{--bg:#e9eef5;--paper:#fbfcfe;--ink:#17263d;--mute:#6a7b93;--line:#c3cedd;--accent:#0e8a8c;--sel:#cfe9ea;--peer:#e6eff6;--same:#aedadb;--err:#c8372d;--errbg:#f8dcd9;--font:"Iowan Old Style",Georgia,serif;--ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
- font-family:var(--ui);color:var(--ink);width:min(100%,420px);margin:0 auto;padding:max(10px,env(safe-area-inset-top)) 12px 16px;touch-action:manipulation}
+ font-family:var(--ui);color:var(--ink);width:min(100%,450px);margin:0 auto;padding:max(10px,env(safe-area-inset-top)) 12px 16px;touch-action:manipulation}
 @media(prefers-color-scheme:dark){.sd{--bg:#0f1824;--paper:#162233;--ink:#e3ebf6;--mute:#8296b0;--line:#33445c;--accent:#3fc0c2;--sel:#1f4852;--peer:#1b2b40;--same:#27616a;--err:#ff7a70;--errbg:#4a2326}}
 body{background:#e9eef5;margin:0}@media(prefers-color-scheme:dark){body{background:#0f1824}}
-.sd *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+.sd,.sd *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+.sd{min-height:100dvh;display:flex;flex-direction:column}.sd.play{height:100dvh}
+.sd>*{flex-shrink:0}.sd>.bw{flex:1 1 0;min-height:0}
+.bw{display:flex;align-items:center;justify-content:center;container-type:size}
 .sd button{font:inherit;color:var(--ink);cursor:pointer}
 .sd header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .sd h1{font:600 28px/1 var(--font);margin:0}.sd h2{font:600 18px var(--font);margin:20px 0 8px}
@@ -558,7 +563,7 @@ body{background:#e9eef5;margin:0}@media(prefers-color-scheme:dark){body{backgrou
 .acts button[aria-pressed=true]{background:var(--ink)!important;border-color:var(--ink)!important;color:var(--paper)!important}
 .levels{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
 .stats{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);margin-bottom:8px}
-#board{display:grid;grid-template-columns:repeat(9,1fr);aspect-ratio:1;width:min(100%,calc(100dvh - 330px));min-width:280px;margin:0 auto;container-type:inline-size;background:var(--paper);border:2px solid var(--ink);border-radius:4px}
+#board{display:grid;grid-template-columns:repeat(9,1fr);aspect-ratio:1;width:min(100cqw,100cqh);container-type:inline-size;background:var(--paper);border:2px solid var(--ink);border-radius:4px}
 .c{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);font:500 clamp(16px,6.4cqw,30px)/1 var(--font);color:var(--accent);cursor:pointer;user-select:none}
 .c.g{color:var(--ink);font-weight:700}
 .c:nth-child(9n+3),.c:nth-child(9n+6){border-right:2px solid var(--ink)}
@@ -584,6 +589,6 @@ body{background:#e9eef5;margin:0}@media(prefers-color-scheme:dark){body{backgrou
 .win h2{font-size:26px;margin:0 0 8px}.win p{color:var(--mute)}
 .win button{display:block;width:100%;margin-top:10px;padding:11px;border:0;background:var(--accent);color:#fff;border-radius:8px;font-size:16px}
 .win .ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.foot{margin-top:16px;text-align:center;font-size:13px;color:var(--mute);letter-spacing:.02em}
+.foot{margin-top:10px;text-align:center;font-size:13px;color:var(--mute);letter-spacing:.02em}
 .sd button:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
 `;

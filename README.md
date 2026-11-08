@@ -2,6 +2,16 @@
 
 Un sudoku para jugar desde el navegador o el celular, que anda sin internet. Lo hice con React y guarda todo en el dispositivo: la partida que dejás a medias y las estadísticas.
 
+## Probarlo
+
+Online: https://misudokuapp.netlify.app/
+
+O escaneá el código con el celular:
+
+<p align="center">
+  <img src="docs/qr-sudoku.png" alt="Código QR de https://misudokuapp.netlify.app/" width="200">
+</p>
+
 ## Qué tiene
 
 - 4 niveles: Fácil, Medio, Difícil y Experto
@@ -56,6 +66,8 @@ src/
 public/
   pwa-192.png
   pwa-512.png
+docs/
+  qr-sudoku.png
 index.html
 vite.config.js
 netlify.toml
